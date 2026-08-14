@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find a Kindred Spirit</title>
+<style>
+  :root {
+    --bg: #e8f1fa;
+    --panel: #ffffff;
+    --ink: #333a44;
+    --muted: #6a7480;
+    --accent: #274690;
+    --accent-dark: #1e3a66;
+    --lavender: #dbcdf0;
+    --mint: #c9e4de;
+    --sky: #c6def1;
+    --pink: #f2c6de;
+    --peach: #f7d9c4;
+    --warm: #3d6cb3;
+    --green: #3a8f74;
+    --line: #d8e4f1;
+    --radius: 18px;
+    --shadow: 0 12px 32px rgba(26, 62, 112, .12);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(232, 241, 250, .92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .brand .mark {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--warm));
+    color: #fff;
+    font-size: 18px;
+  }  nav .links { display: flex; gap: 22px; align-items: center; }
+  nav .links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  nav .links a:hover { color: var(--accent-dark); }
+  .nav-cta {
+    background: linear-gradient(135deg, var(--accent), var(--warm));
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 999px;
+  }
+  .nav-cta:hover { background: linear-gradient(135deg, var(--accent-dark), #2a4a8a); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center;
+    padding: 96px 0 72px;
+    background:
+      radial-gradient(800px 320px at 50% -80px, rgba(39, 70, 144, .14), transparent 70%);
+  }
+  .hero .badge {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .hero h1 {
+    font-size: clamp(38px, 6vw, 62px);
+    line-height: 1.08;
+    margin: 0 0 18px;
+    letter-spacing: -.5px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--warm));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p.tagline {
+    font-size: clamp(17px, 2.4vw, 21px);
+    color: var(--muted);
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+  .hero .actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 14px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform .15s, box-shadow .15s, background .15s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.primary {
+    background: linear-gradient(135deg, var(--accent), var(--warm));
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(39, 70, 144, .35);
+  }
+  .btn.primary:hover { background: linear-gradient(135deg, var(--accent-dark), #2a4a8a); }
+  .btn.ghost {
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent-dark); }
+
+  .hero .mini-note {
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* ---------- Section shell ---------- */
+  section { padding: 72px 0; }
+  section.alt { background: linear-gradient(180deg, #eef5fb, #e3edf8); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .kicker {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.15;
+    margin: 0 0 14px;
+    letter-spacing: -.4px;
+  }
+  .section-head p {
+    color: var(--muted);
+    max-width: 620px;
+    margin: 0;
+    font-size: 17px;
+  }
+
+  /* ---------- Problem ---------- */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 36px;
+  }
+  .problem-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: var(--shadow);
+  }
+  .problem-card .emoji {
+    font-size: 30px;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: var(--lavender);
+    display: grid;
+    place-items: center;
+  }
+  .problem-card:nth-child(1) .emoji { background: var(--lavender); }
+  .problem-card:nth-child(2) .emoji { background: var(--pink); }
+  .problem-card:nth-child(3) .emoji { background: var(--sky); }
+  .problem-card h3 { margin: 12px 0 6px; font-size: 19px; }
+  .problem-card p { margin: 0; color: var(--muted); font-size: 15px; }
+  .problem-card .example {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+
+  /* ---------- Solution ---------- */
+  .solution {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .solution ul { text-align: left; }
+  .solution p.lead { font-size: 18px; color: var(--muted); margin: 0 0 20px; }
+  .solution ul { list-style: none; padding: 0; margin: 0 0 24px; }
+  .solution ul li {
+    padding: 8px 0 8px 30px;
+    position: relative;
+    color: var(--ink);
+    font-size: 16px;
+  }
+  .solution ul li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+  }
+  .phone {
+    position: relative;
+    width: min(320px, 100%);
+    margin: 0 auto;
+    background: #1d1d1f;
+    border: 4px solid #333;
+    border-radius: 44px;
+    padding: 10px;
+    box-shadow: 0 28px 60px rgba(26, 62, 112, .25);
+  }
+  .phone::before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: 108px;
+    width: 4px;
+    height: 30px;
+    background: #333;
+    border-radius: 2px 0 0 2px;
+    box-shadow: 0 48px 0 #333;
+  }
+  .phone::after {
+    content: "";
+    position: absolute;
+    right: -4px;
+    top: 128px;
+    width: 4px;
+    height: 52px;
+    background: #333;
+    border-radius: 0 2px 2px 0;
+  }
+  .phone-top {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .phone-top .notch {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 8px;
+    width: 100px;
+    height: 20px;
+    background: #000;
+    border-radius: 0 0 12px 12px;
+  }
+  .phone-top .icons { display: inline-flex; align-items: center; gap: 6px; }
+  .phone-top .bars { display: inline-flex; align-items: flex-end; gap: 2px; }
+  .phone-top .bars i {
+    width: 3px;
+    background: #fff;
+    border-radius: 1px;
+    display: block;
+  }
+  .phone-top .bars i:nth-child(1) { height: 3px; }
+  .phone-top .bars i:nth-child(2) { height: 5px; }
+  .phone-top .bars i:nth-child(3) { height: 7px; }
+  .phone-top .bars i:nth-child(4) { height: 9px; }
+  .phone-top .battery {
+    width: 20px;
+    height: 10px;
+    border: 1.5px solid #fff;
+    border-radius: 3px;
+    position: relative;
+  }
+  .phone-top .battery::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 55%;
+    height: calc(100% - 4px);
+    background: #fff;
+    border-radius: 1px;
+  }
+  /* ---------- Demo ---------- */
+  #demo { text-align: center; }
+  #demo .section-head p { margin-left: auto; margin-right: auto; }
+
+  /* ---------- Results inside the phone ---------- */
+  .phone-screen {
+    background: linear-gradient(180deg, #eef5fb, #e4f0f9);
+    border-radius: 30px;
+    padding: 22px 18px;
+    overflow: hidden;
+    height: 560px;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone .app-bar {
+    background: linear-gradient(135deg, var(--accent), var(--warm));
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    text-align: center;
+    padding: 12px;
+    margin: -22px -18px 18px;
+  }
+  .phone .mock-title {
+    font-weight: 800;
+    margin-bottom: 16px;
+    font-size: 17px;
+    text-align: center;
+  }
+  .phone .phone-view {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 2px;
+  }
+  .results-bar {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .results-back {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    cursor: pointer;
+    line-height: 1;
+  }
+  .results-title { font-weight: 800; font-size: 15px; }
+  .results-summary { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  #phone-people-list .person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+  }
+  #phone-people-list .person .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  #phone-people-list .person .info { flex: 1; min-width: 0; }
+  #phone-people-list .person h3 { margin: 0 0 2px; font-size: 15px; }
+  #phone-people-list .person .activity { margin: 0 0 2px; font-size: 12px; font-weight: 700; color: var(--accent); }
+  #phone-people-list .person .bio { margin: 0; font-size: 12px; color: var(--muted); }
+  #phone-people-list .person .dist {
+    flex-shrink: 0;
+    background: var(--mint);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .home-indicator {
+    width: 120px;
+    height: 4px;
+    border-radius: 2px;
+    background: #d8d8dc;
+    margin: 10px auto 2px;
+  }
+  .phone .field { margin-bottom: 14px; }
+  .phone label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .phone .input {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--bg);
+    color: var(--ink);
+    width: 100%;
+  }
+  .phone select.input { cursor: pointer; }
+  .phone .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .phone .chip {
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .phone .chip.on { border-color: var(--lavender); background: rgba(219, 205, 240, .5); color: var(--accent-dark); font-weight: 700; }
+  .phone .btn { width: 100%; text-align: center; }
+
+  /* ---------- How it works ---------- */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+    counter-reset: step;
+  }
+  .step {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .step .num {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--warm));
+    color: #fff;
+    font-weight: 800;
+    font-size: 20px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 16px;
+  }
+  .step h3 { margin: 0 0 8px; font-size: 19px; }
+  .step p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  /* ---------- Features ---------- */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 36px;
+  }
+  .feature {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px;
+  }
+  .feature .icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: #fff;
+    border: 1px solid var(--line);
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .feature:nth-child(1) .icon { background: var(--mint); }
+  .feature:nth-child(2) .icon { background: var(--pink); }
+  .feature:nth-child(3) .icon { background: var(--lavender); }
+  .feature h3 { margin: 0 0 6px; font-size: 18px; }
+  .feature p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  /* ---------- Trust ---------- */
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: start;
+    margin-top: 36px;
+  }
+  .creator {
+    display: flex;
+    gap: 20px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: var(--shadow);
+  }
+  .creator .avatar {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--warm), var(--accent));
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .creator h3 { margin: 0 0 4px; font-size: 19px; }
+  .creator .role { font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+  .creator p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  .reviews { display: flex; flex-direction: column; gap: 16px; }
+  .review-form {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+  }
+  .review-form h3 { margin: 0 0 4px; font-size: 19px; }
+  .review-form .sub { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+  .stars-input { display: flex; gap: 4px; margin-bottom: 14px; }
+  .stars-input button {
+    background: none;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    padding: 0;
+    color: #e0d6c4;
+    cursor: pointer;
+    transition: color .15s, transform .15s;
+  }
+  .stars-input button:hover { transform: scale(1.15); }
+  .stars-input button.on { color: #f5a623; }
+  #review-msg { margin: 10px 0 0; font-size: 14px; font-weight: 600; min-height: 20px; color: var(--green); }
+  .review-list { display: flex; flex-direction: column; gap: 16px; }
+  .review-list .empty { color: var(--muted); font-size: 15px; font-style: italic; }
+  .review {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+  }
+  .review .stars { color: #f5a623; letter-spacing: 2px; font-size: 15px; margin-bottom: 6px; }
+  .review p { margin: 0 0 10px; font-size: 15px; color: var(--ink); }
+  .review .who { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .review .who b { color: var(--ink); }
+
+  /* ---------- CTA ---------- */
+  .cta {
+    text-align: center;
+    background:
+      radial-gradient(600px 260px at 50% 0%, rgba(198, 222, 241, .45), transparent 70%),
+      linear-gradient(180deg, #eef4fb, #fff);
+  }
+  .cta h2 { max-width: 560px; margin-left: auto; margin-right: auto; }
+  .cta p.sub { color: var(--muted); max-width: 480px; margin: 0 auto 28px; font-size: 17px; }
+  .signup {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .signup input[type="email"] {
+    flex: 1 1 240px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 14px 22px;
+    font-family: inherit;
+    font-size: 15px;
+    background: var(--bg);
+  }
+  .signup input[type="email"]:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  #signup-msg { margin-top: 14px; font-size: 14px; font-weight: 600; min-height: 20px; color: var(--green); }
+  .privacy { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  footer .brand { justify-content: center; margin-bottom: 8px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px) {
+    .solution, .trust-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    nav .links a:not(.nav-cta) { display: none; }
+    .hero { padding: 64px 0 56px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a class="brand" href="#top"><span class="mark">&#10084;&#65039;</span> Find a Kindred Spirit</a>
+    <div class="links">
+      <a href="#problem">Problem</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#trust">About</a>
+      <a class="nav-cta" href="#signup">Get notified</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="container">
+    <h1>Find a <span class="grad">Kindred Spirit</span></h1>
+    <p class="tagline">Whatever you love doing — studying, training, crafting, playing — find the right buddy or group who wants to do it too, nearby.</p>
+    <div class="actions">
+      <a class="btn primary" href="#problem">What's the problem?</a>
+    </div>
+    <p class="mini-note">Free at launch &#183; Now in development</p>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">The problem</p>
+      <h2>Doing it alone is harder than it needs to be.</h2>
+      <p>Students, athletes, and hobbyists all run into the same wall: wanting to do something, but not having the right person to do it with.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <span class="emoji">&#128218;</span>
+        <h3>Students</h3>
+        <p>Studying solo is slower and harder to stick with.</p>
+        <div class="example">"I need a study buddy to quiz me before my history test."</div>
+      </div>
+      <div class="problem-card">
+        <span class="emoji">&#127952;</span>
+        <h3>Athletes</h3>
+        <p>Sports often need more than one person — and the right ones.</p>
+        <div class="example">"I want people to practice volleyball at the beach with."</div>
+      </div>
+      <div class="problem-card">
+        <span class="emoji">&#127912;</span>
+        <h3>Hobbyists</h3>
+        <p>Your hobby is more fun shared with people who get it.</p>
+        <div class="example">"Looking for other painters for a weekend group session."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="solution">
+  <div class="container">
+    <div class="solution">
+      <div>
+        <p class="kicker">The solution</p>
+        <h2>Match with the right buddy or group — then do the thing.</h2>
+        <p class="lead">Find a Kindred Spirit connects you with people who want to do the same activity as you, at the same time, close enough to make it happen.</p>
+        <ul>
+          <li>Post what you want to do and how many people you need</li>
+          <li>Get matched with others who share your interest</li>
+          <li>Meet up and enjoy the activity together</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">How it works</p>
+      <h2>Three quick steps to your next hangout.</h2>
+      <p>No endless swiping — just tell us what you want to do, and we'll find the people.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Tell us your interest</h3>
+        <p>What do you want to do? Studying for a test, playing volleyball, hiking, painting — anything goes.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Set your group size</h3>
+        <p>Looking for one study buddy or a whole team? Pick how many people you want to meet up with.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Choose your radius</h3>
+        <p>Share your location and how far you're willing to travel, and we'll match you with kindred spirits nearby.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="container">
+    <div class="section-head demo-head">
+      <p class="kicker">Demo</p>
+      <h2>Try it Out</h2>
+      <p>Fill in the form and see who your kindred spirits could be.</p>
+    </div>
+    <div class="phone">
+      <div class="phone-top">
+        <span>9:41</span>
+        <span class="notch"></span>
+        <span class="icons">
+          <span class="bars"><i></i><i></i><i></i><i></i></span>
+          <span class="battery"></span>
+        </span>
+      </div>
+      <div class="phone-screen">
+        <div class="app-bar">Find a Kindred Spirit</div>
+
+        <div class="phone-view" id="view-form">
+          <div class="mock-title">&#128396;&#65039; Create a hangout</div>
+          <div class="field">
+            <label for="phone-what">I want to...</label>
+            <input class="input" type="text" id="phone-what" placeholder="study geometry">
+          </div>
+          <div class="field">
+            <label for="phone-people">How many people are you looking for?</label>
+            <select class="input" id="phone-people">
+              <option value="1 buddy">1 buddy</option>
+              <option value="2&#8211;4 people">2&#8211;4 people</option>
+              <option value="a full group">A full group (5+)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="phone-where">Where are you located?</label>
+            <input class="input" type="text" id="phone-where" placeholder="e.g. North Shore">
+          </div>
+          <div class="field">
+            <label for="phone-drive">How far are you willing to drive?</label>
+            <select class="input" id="phone-drive">
+              <option value="up to 5 miles">Up to 5 miles</option>
+              <option value="up to 15 miles">Up to 15 miles</option>
+              <option value="up to 30 miles">Up to 30 miles</option>
+              <option value="anywhere nearby">Anywhere nearby</option>
+            </select>
+          </div>
+          <button class="btn primary" type="button" id="phone-find">Find my kindred spirits &#8594;</button>
+        </div>
+
+        <div class="phone-view" id="view-results" hidden>
+          <div class="results-bar">
+            <button class="results-back" type="button" id="phone-back" aria-label="Back">&#8592;</button>
+            <div>
+              <div class="results-title">Kindred Spirits Found</div>
+              <div class="results-summary" id="results-summary"></div>
+            </div>
+          </div>
+          <div id="phone-people-list"></div>
+        </div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="features">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Features</p>
+      <h2>What a little company changes.</h2>
+      <p>Finding the right people turns a good activity into a great one.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">&#127881;</div>
+        <h3>More enjoyment</h3>
+        <p>Shared experiences are simply more fun — you'll look forward to doing the thing again and again.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">&#127919;</div>
+        <h3>More effectiveness</h3>
+        <p>Accountability and practice partners make study sessions and sport drills sharper and more productive.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">&#128640;</div>
+        <h3>More engagement</h3>
+        <p>With a group on the calendar, you show up, stay consistent, and keep coming back.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Trust &amp; community</p>
+      <h2>Built by someone who needed it.</h2>
+      <p>Find a Kindred Spirit started with a simple problem — and a belief that better matches make better experiences.</p>
+    </div>
+    <div class="trust-grid">
+      <div class="creator">
+        <div class="avatar">S</div>
+        <div>
+          <h3>Siri Atluri</h3>
+          <div class="role">Creator</div>
+          <p>I built Find a Kindred Spirit because I often needed someone to study with. I knew there were people out there who wanted the same thing — we just had no good way to find each other. So I made one.</p>
+        </div>
+      </div>
+      <div class="reviews">
+        <form class="review-form" id="review-form" novalidate>
+          <h3>Leave a review</h3>
+          <p class="sub">Found your kindred spirits? Share your experience.</p>
+          <div class="stars-input" id="stars-input">
+            <button type="button" data-value="1" aria-label="1 star">&#9733;</button>
+            <button type="button" data-value="2" aria-label="2 stars">&#9733;</button>
+            <button type="button" data-value="3" aria-label="3 stars">&#9733;</button>
+            <button type="button" data-value="4" aria-label="4 stars">&#9733;</button>
+            <button type="button" data-value="5" aria-label="5 stars">&#9733;</button>
+          </div>
+          <div class="field">
+            <label for="review-name">Your name</label>
+            <input class="input" type="text" id="review-name" placeholder="e.g. Maya R.">
+          </div>
+          <div class="field">
+            <label for="review-text">Your review</label>
+            <textarea class="input" id="review-text" rows="3" placeholder="How did Find a Kindred Spirit help you?"></textarea>
+          </div>
+          <button class="btn primary" type="submit">Post review</button>
+          <p id="review-msg"></p>
+        </form>
+        <div class="review-list" id="review-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="signup">
+  <div class="container">
+    <p class="kicker">Get notified</p>
+    <h2>Be the first to know when Find a Kindred Spirit launches.</h2>
+    <p class="sub">Join the emailing list and we'll update you the moment it's released.</p>
+    <form class="signup" id="signup-form" novalidate>
+      <input type="email" id="email" placeholder="you@example.com" aria-label="Email address" required>
+      <button class="btn primary" type="submit">Notify me &#8594;</button>
+    </form>
+    <p id="signup-msg"></p>
+    <p class="privacy">No spam. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="brand"><span class="mark">&#10084;&#65039;</span> Find a Kindred Spirit</div>
+    &copy; <span id="year"></span> Find a Kindred Spirit &#183; Made with love by Siri Atluri
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const form = document.getElementById("signup-form");
+  const email = document.getElementById("email");
+  const msg = document.getElementById("signup-msg");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const value = email.value.trim();
+    if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      msg.style.color = "#c0392b";
+      msg.textContent = "Please enter a valid email address.";
+      return;
+    }
+    msg.style.color = "#3a8f74";
+    msg.textContent = "\u2705 You're on the list! We'll email you when it launches.";
+    form.reset();
+  });
+
+  // ---- Phone demo: app screens ----
+  const findBtn = document.getElementById("phone-find");
+  const viewForm = document.getElementById("view-form");
+  const viewResults = document.getElementById("view-results");
+  const phoneBack = document.getElementById("phone-back");
+  const phonePeople = document.getElementById("phone-people-list");
+  const resultsSummary = document.getElementById("results-summary");
+
+  const NAMES = ["Alex", "Maya", "Jonas", "Priya", "Dev", "Sam", "Rin", "Chris", "Nina", "Leo", "Aisha", "Tom", "Ella", "Max", "Ravi", "Zoe", "Omar", "Lucy"];
+  const ACTIVITIES = [
+    {
+      keys: ["study", "math", "geometry", "algebra", "calculus", "trig", "trigonometry", "statistics", "history", "quiz", "exam", "test", "homework", "science", "physics", "chem", "biology", "learn", "school", "class", "reading", "vocabulary", "essay", "sat"],
+      bios: ["Quiz-ready and loves flashcards.", "Needs a study partner before the next exam.", "Shares notes and stays super focused.", "Great at explaining tricky concepts.", "Prefers quiet libraries and long sessions."]
+    },
+    {
+      keys: ["volleyball", "beach"],
+      bios: ["Loves beach volleyball on weekends.", "Plays setter and has a solid serve.", "Wants to practice drills twice a week.", "Brings the ball and a good spike.", "Training hard for the summer tournament."]
+    },
+    {
+      keys: ["basketball", "hoops", "b-ball"],
+      bios: ["Plays point guard and runs fast breaks.", "Looking for a pickup group this week.", "Shoots threes every evening.", "Great defender, terrible trash talker."]
+    },
+    {
+      keys: ["run", "running", "jog", "marathon", "workout", "train", "gym", "exercise", "sprint"],
+      bios: ["Training for a half marathon.", "Morning-run regular who paces well.", "Loves company on long runs.", "Keeps a steady tempo and good chat."]
+    },
+    {
+      keys: ["paint", "painting", "art", "draw", "sketch", "craft", "pottery"],
+      bios: ["Paints on weekends and wants a group to share ideas.", "Brings the easel and snacks.", "Loves watercolor and acrylics.", "Wants a weekly painting session."]
+    },
+    {
+      keys: ["guitar", "music", "piano", "sing", "jam", "band", "drum", "drumming"],
+      bios: ["Learning guitar and wants to jam.", "Plays in a weekend band.", "Sings and plays ukulele.", "Down to swap playlists and chords."]
+    },
+    {
+      keys: ["hike", "hiking", "trail", "camp", "camping", "nature", "outdoor", "outdoors"],
+      bios: ["Knows great trails nearby.", "Weekend hiker looking for company.", "Packs snacks and a good map.", "Loves sunrise hikes on Saturday."]
+    },
+    {
+      keys: ["photograph", "photography", "photo", "camera", "picture"],
+      bios: ["Shoots golden-hour photos everywhere.", "Wants a walking photo buddy.", "Brings a camera and a tripod.", "Learning editing and wants feedback."]
+    },
+    {
+      keys: ["swim", "swimming", "pool", "lap"],
+      bios: ["Swims laps every morning.", "Wants a swim buddy for the pool.", "Great with swim drills.", "Prefers the outdoor pool in summer."]
+    }
+  ];
+  const OPEN_TO_ANYTHING = [
+    "Open to anything — just wants good company.",
+    "Down for whatever, loves meeting new people.",
+    "Super flexible and easy to plan with.",
+    "Excited to try something new.",
+    "No strong preferences, always up for an adventure."
+  ];
+
+  function biosFor(activity) {
+    const a = activity.toLowerCase();
+    for (const cat of ACTIVITIES) {
+      if (cat.keys.some(k => a.includes(k))) return cat.bios;
+    }
+    return OPEN_TO_ANYTHING;
+  }
+  const AVATARS = ["#c9e4de", "#c6def1", "#dbcdf0", "#f2c6de", "#f7d9c4"];
+  const MILES = { "up to 5 miles": 5, "up to 15 miles": 15, "up to 30 miles": 30, "anywhere nearby": 40 };
+
+  function switchView(show, hide) {
+    show.hidden = false;
+    hide.hidden = true;
+    show.scrollTop = 0;
+  }
+
+  findBtn.addEventListener("click", () => {
+    const what = document.getElementById("phone-what").value.trim();
+    const where = document.getElementById("phone-where").value.trim();
+    const drive = document.getElementById("phone-drive").value;
+    const peopleSel = document.getElementById("phone-people").value;
+
+    const activity = what.replace(/^i\s+want\s+to\s+/i, "") || "your activity";
+    const location = where || "your area";
+
+    let count;
+    if (peopleSel === "1 buddy") count = 1 + Math.floor(Math.random() * 3);
+    else if (peopleSel === "2\u20134 people") count = 3 + Math.floor(Math.random() * 4);
+    else count = 7 + Math.floor(Math.random() * 6);
+
+    const miles = MILES[drive] || 15;
+    const picked = [];
+    const used = new Set();
+    while (picked.length < count) {
+      const i = Math.floor(Math.random() * NAMES.length);
+      if (used.has(i)) continue;
+      used.add(i);
+      picked.push(i);
+    }
+
+    const pool = biosFor(activity);
+
+    phonePeople.innerHTML = picked.map(i => {
+      const name = NAMES[i];
+      const dist = Math.round(Math.random() * miles * 10) / 10;
+      const avatar = AVATARS[i % AVATARS.length];
+      const buddy = pool[Math.floor(Math.random() * pool.length)];
+      const wantLine = pool === OPEN_TO_ANYTHING ? "Open to anything" : "Wants to " + activity;
+      return `
+        <div class="person">
+          <div class="avatar" style="background:${avatar}">${esc(name[0])}</div>
+          <div class="info">
+            <h3>${esc(name)}</h3>
+            <p class="activity">${esc(wantLine)}</p>
+            <p class="bio">${esc(buddy)}</p>
+          </div>
+          <span class="dist">${dist} mi</span>
+        </div>`;
+    }).join("");
+
+    resultsSummary.textContent =
+      count + " kindred spirit" + (count === 1 ? "" : "s") +
+      " found near " + location + " who want to " + activity +
+      " — " + peopleSel + ", " + drive + ".";
+
+    switchView(viewResults, viewForm);
+  });
+
+  phoneBack.addEventListener("click", () => {
+    switchView(viewForm, viewResults);
+  });
+
+  const starBtns = [...document.querySelectorAll("#stars-input button")];
+  const reviewForm = document.getElementById("review-form");
+  const reviewName = document.getElementById("review-name");
+  const reviewText = document.getElementById("review-text");
+  const reviewMsg = document.getElementById("review-msg");
+  const reviewList = document.getElementById("review-list");
+
+  let reviews = [];
+  try { reviews = JSON.parse(localStorage.getItem("kindred-reviews") || "[]"); } catch (e) {}
+
+  function esc(s) {
+    return s.replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  function renderReviews() {
+    if (!reviews.length) {
+      reviewList.innerHTML = '<p class="empty">No reviews yet — be the first!</p>';
+      return;
+    }
+    reviewList.innerHTML = reviews.map(r => `
+      <div class="review">
+        <div class="stars">${"\u2605".repeat(r.rating)}${"\u2606".repeat(5 - r.rating)}</div>
+        <p>"${esc(r.text)}"</p>
+        <div class="who"><b>${esc(r.name)}</b></div>
+      </div>`).join("");
+  }
+
+  starBtns.forEach(b => b.addEventListener("click", () => {
+    const rating = Number(b.dataset.value);
+    starBtns.forEach((s, i) => s.classList.toggle("on", i < rating));
+  }));
+
+  reviewForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const rating = starBtns.filter(b => b.classList.contains("on")).length;
+    const name = reviewName.value.trim();
+    const text = reviewText.value.trim();
+    if (!rating) {
+      reviewMsg.style.color = "#c0392b";
+      reviewMsg.textContent = "Please pick a star rating.";
+      return;
+    }
+    if (!name) {
+      reviewMsg.style.color = "#c0392b";
+      reviewMsg.textContent = "Please enter your name.";
+      return;
+    }
+    if (!text) {
+      reviewMsg.style.color = "#c0392b";
+      reviewMsg.textContent = "Please write a short review.";
+      return;
+    }
+    reviews.unshift({ rating, name, text });
+    try { localStorage.setItem("kindred-reviews", JSON.stringify(reviews)); } catch (e) {}
+    reviewForm.reset();
+    starBtns.forEach(s => s.classList.remove("on"));
+    reviewMsg.style.color = "#3a8f74";
+    reviewMsg.textContent = "\u2705 Thanks! Your review has been posted.";
+    renderReviews();
+  });
+
+  renderReviews();
+</script>
+
+</body>
+</html>
