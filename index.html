@@ -795,12 +795,10 @@
           </div>
           <div class="field">
             <label for="phone-drive">How far are you willing to drive?</label>
-            <select class="input" id="phone-drive">
-              <option value="up to 5 miles">Up to 5 miles</option>
-              <option value="up to 15 miles">Up to 15 miles</option>
-              <option value="up to 30 miles">Up to 30 miles</option>
-              <option value="anywhere nearby">Anywhere nearby</option>
-            </select>
+            <div class="number-row">
+              <input class="input" type="number" id="phone-drive" min="1" max="100" placeholder="15">
+              <span>miles</span>
+            </div>
           </div>
           <button class="btn primary" type="button" id="phone-find">Find my kindred spirits &#8594;</button>
         </div>
@@ -996,7 +994,6 @@
     return OPEN_TO_ANYTHING;
   }
   const AVATARS = ["#c9e4de", "#c6def1", "#dbcdf0", "#f2c6de", "#f7d9c4"];
-  const MILES = { "up to 5 miles": 5, "up to 15 miles": 15, "up to 30 miles": 30, "anywhere nearby": 40 };
 
   function switchView(show, hide) {
     show.hidden = false;
@@ -1007,8 +1004,7 @@
   findBtn.addEventListener("click", () => {
     const what = document.getElementById("phone-what").value.trim();
     const where = document.getElementById("phone-where").value.trim();
-    const drive = document.getElementById("phone-drive").value;
-
+    const miles = Math.max(1, parseInt(document.getElementById("phone-drive").value, 10) || 10);
     const activity = what.replace(/^i\s+want\s+to\s+/i, "") || "your activity";
     const location = where || "your area";
 
@@ -1017,7 +1013,7 @@
     if (isNaN(typed) || typed < 1) count = 3;
     else count = Math.min(typed + 2, 12);
 
-    const miles = MILES[drive] || 15;
+    const miles = Math.max(1, parseInt(document.getElementById("phone-drive").value, 10) || 10);
     const picked = [];
     const used = new Set();
     while (picked.length < count) {
@@ -1050,7 +1046,7 @@
     resultsSummary.textContent =
       count + " kindred spirit" + (count === 1 ? "" : "s") +
       " found near " + location + " who want to " + activity +
-      " — willing to drive " + drive + ".";
+      " — willing to drive up to " + miles + " miles.";
 
     switchView(viewResults, viewForm);
   });
