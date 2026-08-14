@@ -7,21 +7,34 @@ function esc(s) {
 const REVIEW_KEY = "kindred-reviews";
 
 const ReviewStore = {
-  all() {
-    try { return JSON.parse(localStorage.getItem(REVIEW_KEY) || "[]"); } catch (e) { return []; }
+  async all() {
+    try {
+      const res = await fetch("/api/reviews");
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    try { return JSON.parse(localStorage.getItem(REVIEW_KEY) || "[]"); } catch (e2) { return []; }
   },
-  add(review) {
-    const reviews = this.all();
+  async add(review) {
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(review)
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    let reviews = [];
+    try { reviews = JSON.parse(localStorage.getItem(REVIEW_KEY) || "[]"); } catch (e2) {}
     reviews.unshift(review);
-    try { localStorage.setItem(REVIEW_KEY, JSON.stringify(reviews)); } catch (e) {}
+    try { localStorage.setItem(REVIEW_KEY, JSON.stringify(reviews)); } catch (e3) {}
     return reviews;
   }
 };
 
-function renderReviews() {
+async function renderReviews() {
   const list = document.getElementById("review-list");
   if (!list) return;
-  const reviews = ReviewStore.all();
+  const reviews = await ReviewStore.all();
   if (!reviews.length) {
     list.innerHTML = '<p class="empty">No reviews yet — be the first!</p>';
     return;
@@ -48,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     starBtns.forEach((s, i) => s.classList.toggle("on", i < rating));
   }));
 
-  reviewForm.addEventListener("submit", (e) => {
+  reviewForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const rating = starBtns.filter(b => b.classList.contains("on")).length;
     const name = reviewName.value.trim();
@@ -68,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
       reviewMsg.textContent = "Please write a short review.";
       return;
     }
-    ReviewStore.add({ rating, name, text });
+    await ReviewStore.add({ rating, name, text });
     reviewForm.reset();
     starBtns.forEach(s => s.classList.remove("on"));
     reviewMsg.style.color = "#3a8f74";
