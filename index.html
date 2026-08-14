@@ -428,6 +428,12 @@
     margin: 10px auto 2px;
   }
   .phone .field { margin-bottom: 14px; }
+  .phone .field-error {
+    color: #c0392b;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 6px 0 0;
+  }
   .phone label {
     display: block;
     font-size: 12px;
@@ -781,6 +787,7 @@
           <div class="field">
             <label for="phone-what">I want to...</label>
             <input class="input" type="text" id="phone-what" placeholder="e.g. study geometry">
+            <p class="field-error" id="phone-error" hidden></p>
           </div>
             <div class="field">
               <label for="phone-people">How many people are you looking for?</label>
@@ -938,6 +945,9 @@
   const phoneBack = document.getElementById("phone-back");
   const phonePeople = document.getElementById("phone-people-list");
   const resultsSummary = document.getElementById("results-summary");
+  const phoneError = document.getElementById("phone-error");
+
+  const BANNED = ["kill", "murder", "rob", "kidnap", "steal", "shoot", "stab", "bomb", "hack", "assault", "scam", "traffick", "vandalize", "arson", "torture"];
 
   const NAMES = ["Alex", "Maya", "Jonas", "Priya", "Dev", "Sam", "Rin", "Chris", "Nina", "Leo", "Aisha", "Tom", "Ella", "Max", "Ravi", "Zoe", "Omar", "Lucy"];
   const ACTIVITIES = [
@@ -1008,6 +1018,14 @@
     const activity = what.replace(/^i\s+want\s+to\s+/i, "") || "your activity";
     const location = where || "your area";
 
+    const banned = BANNED.find(b => what.toLowerCase().includes(b));
+    if (banned) {
+      phoneError.textContent = "That doesn't sound like something a kindred spirit would help with. Try something else.";
+      phoneError.hidden = false;
+      return;
+    }
+    phoneError.hidden = true;
+
     const typed = parseInt(document.getElementById("phone-people").value, 10);
     let count;
     if (isNaN(typed) || typed < 1) count = 3;
@@ -1052,6 +1070,10 @@
 
   phoneBack.addEventListener("click", () => {
     switchView(viewForm, viewResults);
+  });
+
+  document.getElementById("phone-what").addEventListener("input", () => {
+    phoneError.hidden = true;
   });
 
   const starBtns = [...document.querySelectorAll("#stars-input button")];
