@@ -448,6 +448,21 @@
     width: 100%;
   }
   .phone select.input { cursor: pointer; }
+  .phone .number-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .phone .number-row input {
+    width: 84px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .phone .number-row span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
   .phone .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .phone .chip {
     border: 1px solid var(--line);
@@ -768,8 +783,11 @@
             <input class="input" type="text" id="phone-what" placeholder="study geometry">
           </div>
             <div class="field">
-              <label for="phone-people">How many kindred spirits are you looking for?</label>
-              <input class="input" type="number" id="phone-people" min="1" max="18" placeholder="e.g. 3">
+              <label for="phone-people">How many people are you looking for?</label>
+              <div class="number-row">
+                <input class="input" type="number" id="phone-people" min="1" max="18" placeholder="3">
+                <span>kindred spirits</span>
+              </div>
             </div>
           <div class="field">
             <label for="phone-where">Where are you located?</label>
