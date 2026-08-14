@@ -767,14 +767,10 @@
             <label for="phone-what">I want to...</label>
             <input class="input" type="text" id="phone-what" placeholder="study geometry">
           </div>
-          <div class="field">
-            <label for="phone-people">How many people are you looking for?</label>
-            <select class="input" id="phone-people">
-              <option value="1 kindred spirit">1 kindred spirit</option>
-              <option value="2&#8211;4 kindred spirits">2&#8211;4 kindred spirits</option>
-              <option value="a full group (5+)">A full group (5+)</option>
-            </select>
-          </div>
+            <div class="field">
+              <label for="phone-people">How many kindred spirits are you looking for?</label>
+              <input class="input" type="number" id="phone-people" min="1" max="18" placeholder="e.g. 3">
+            </div>
           <div class="field">
             <label for="phone-where">Where are you located?</label>
             <input class="input" type="text" id="phone-where" placeholder="e.g. North Shore">
@@ -994,15 +990,14 @@
     const what = document.getElementById("phone-what").value.trim();
     const where = document.getElementById("phone-where").value.trim();
     const drive = document.getElementById("phone-drive").value;
-    const peopleSel = document.getElementById("phone-people").value;
 
     const activity = what.replace(/^i\s+want\s+to\s+/i, "") || "your activity";
     const location = where || "your area";
 
+    const typed = parseInt(document.getElementById("phone-people").value, 10);
     let count;
-    if (peopleSel === "1 kindred spirit") count = 2 + Math.floor(Math.random() * 3);
-    else if (peopleSel === "2\u20134 kindred spirits") count = 3 + Math.floor(Math.random() * 4);
-    else count = 7 + Math.floor(Math.random() * 6);
+    if (isNaN(typed) || typed < 1) count = 3;
+    else count = Math.min(typed + 2, 12);
 
     const miles = MILES[drive] || 15;
     const picked = [];
@@ -1037,7 +1032,7 @@
     resultsSummary.textContent =
       count + " kindred spirit" + (count === 1 ? "" : "s") +
       " found near " + location + " who want to " + activity +
-      " — " + peopleSel + ", " + drive + ".";
+      " — willing to drive " + drive + ".";
 
     switchView(viewResults, viewForm);
   });
