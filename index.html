@@ -770,9 +770,9 @@
           <div class="field">
             <label for="phone-people">How many people are you looking for?</label>
             <select class="input" id="phone-people">
-              <option value="1 buddy">1 buddy</option>
-              <option value="2&#8211;4 people">2&#8211;4 people</option>
-              <option value="a full group">A full group (5+)</option>
+              <option value="1 kindred spirit">1 kindred spirit</option>
+              <option value="2&#8211;4 kindred spirits">2&#8211;4 kindred spirits</option>
+              <option value="a full group (5+)">A full group (5+)</option>
             </select>
           </div>
           <div class="field">
@@ -1000,8 +1000,8 @@
     const location = where || "your area";
 
     let count;
-    if (peopleSel === "1 buddy") count = 1 + Math.floor(Math.random() * 3);
-    else if (peopleSel === "2\u20134 people") count = 3 + Math.floor(Math.random() * 4);
+    if (peopleSel === "1 kindred spirit") count = 2 + Math.floor(Math.random() * 3);
+    else if (peopleSel === "2\u20134 kindred spirits") count = 3 + Math.floor(Math.random() * 4);
     else count = 7 + Math.floor(Math.random() * 6);
 
     const miles = MILES[drive] || 15;
