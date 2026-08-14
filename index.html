@@ -1013,7 +1013,6 @@
     if (isNaN(typed) || typed < 1) count = 3;
     else count = Math.min(typed + 2, 12);
 
-    const miles = Math.max(1, parseInt(document.getElementById("phone-drive").value, 10) || 10);
     const picked = [];
     const used = new Set();
     while (picked.length < count) {
